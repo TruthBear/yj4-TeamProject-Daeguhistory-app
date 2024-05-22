@@ -1,7 +1,69 @@
+import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:project/src/utils/secure_storage.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    Timer(
+      Duration(seconds: 1),
+      isLogin
+    );
+  }
+
+  void moveToScreen({required route}) {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      route,
+          (route) => false,
+    );
+  }
+
+  void isLogin() async {
+    final dio = Dio();
+
+    String? token = await storage.read(key: REFRESH_TOKEN_KEY);
+    if (token != null) {
+      // 리프레쉬 토큰이 있을시
+      try{
+        Response response = await dio.get(
+          'http://10.0.2.2:8080/api/oauth/token',
+          options: Options(
+              headers: {
+                "Authorization": "Bearer $token",
+              }
+          ),
+        );
+
+        String accessToken = response.data["accessToken"];
+        String refreshToken = response.data["refreshToken"];
+
+        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+        await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+
+        moveToScreen(route: "/");
+
+      } on DioException catch(e) {
+        // 리프레쉬 토큰이 만료가 되었으면 로그인 화면으로
+        print(e.response?.data["message"]);
+        moveToScreen(route: "login");
+      }
+    } else {
+      // 리프레쉬 토큰이 없을 시
+      moveToScreen(route: "login");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +79,7 @@ class SplashScreen extends StatelessWidget {
               ),
               CircularProgressIndicator(
                 color: Colors.red,
-              )
+              ),
             ],
           ),
         ),

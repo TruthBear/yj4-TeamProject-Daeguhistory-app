@@ -9,11 +9,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/login',
+      initialRoute: 'splash',
       routes: {
         '/': (context) => DefalutLayout(),
-        '/splash': (context) => SplashScreen(),
-        '/login': (context) => LoginScreen(),
+        'splash': (context) => SplashScreen(),
+        'login': (context) => LoginScreen(),
       },
     );
   }
@@ -53,4 +53,3 @@ class _DefalutLayoutState extends State<DefalutLayout> {
     );
   }
 }
-
