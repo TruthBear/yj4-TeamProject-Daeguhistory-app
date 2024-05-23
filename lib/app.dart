@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project/src/navigation/bottom_navigation_items.dart';
+import 'package:project/src/views/dictionary_screen.dart';
+import 'package:project/src/views/home_screen.dart';
 import 'package:project/src/views/login_screen.dart';
+import 'package:project/src/views/qr_screen.dart';
 import 'package:project/src/views/splash_screen.dart';
+import 'package:project/src/views/stamp_screen.dart';
+import 'package:project/src/views/user_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -27,9 +32,17 @@ class DefalutLayout extends StatefulWidget {
 }
 
 class _DefalutLayoutState extends State<DefalutLayout> {
+  PageController _pageController = PageController();
   int _currentIndex = 1;
 
   void changeIndex(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _pageController.jumpToPage(index);
+  }
+
+  void onPageChanged(int index) {
     setState(() {
       _currentIndex = index;
     });
@@ -38,8 +51,18 @@ class _DefalutLayoutState extends State<DefalutLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Screens.elementAt(_currentIndex),
+      // body: Screens.elementAt(currentIndex),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: onPageChanged,
+        children: <Widget>[
+          HomeScreen(),
+          DictionaryScreen(),
+          // QrScreen(onPageChanged: () => {changeIndex(3)}),
+          QrScreen(onChanged: () { changeIndex(3); },),
+          StampScreen(),
+          UserScreen(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

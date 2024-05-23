@@ -1,17 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/src/views/dictionary_screen.dart';
-import 'package:project/src/views/home_screen.dart';
-import 'package:project/src/views/qr_screen.dart';
-import 'package:project/src/views/stamp_screen.dart';
-import 'package:project/src/views/user_screen.dart';
-
-const List<Widget> Screens = [
-  HomeScreen(),
-  DictionaryScreen(),
-  QrScreen(),
-  StampScreen(),
-  UserScreen(),
-];
 
 const List<BottomNavigationBarItem> BottomNavigationItems = [
   BottomNavigationBarItem(
