@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project/src/utils/secure_storage.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -32,13 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void isLogin() async {
     final dio = Dio();
+    final ip = dotenv.get("SERVER_URL");
 
     String? token = await storage.read(key: REFRESH_TOKEN_KEY);
     if (token != null) {
       // 리프레쉬 토큰이 있을시
       try{
         Response response = await dio.get(
-          'http://10.0.2.2:8080/api/oauth/token',
+          '$ip/api/oauth/token',
           options: Options(
               headers: {
                 "Authorization": "Bearer $token",
@@ -56,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       } on DioException catch(e) {
         // 리프레쉬 토큰이 만료가 되었으면 로그인 화면으로
-        print(e.response?.data["message"]);
+        print(e.response?.data);
         moveToScreen(route: "login");
       }
     } else {
