@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project/src/utils/secure_storage.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final dio = Dio();
+  final ip = dotenv.get("SERVER_URL");
 
   void onChangeEmail(text) {
     setState(() {
@@ -31,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     try {
       Response response = await dio.post(
-        'http://10.0.2.2:8080/api/user/login',
+        '$ip/api/user/login',
         data: {
           "email": _emailController.text,
           "password": _passwordController.text,
