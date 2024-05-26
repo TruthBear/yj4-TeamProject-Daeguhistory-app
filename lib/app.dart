@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/src/navigation/bottom_navigation_items.dart';
 import 'package:project/src/views/dictionary_screen.dart';
 import 'package:project/src/views/home_screen.dart';
-import 'package:project/src/views/login_screen.dart';
+import 'package:project/src/views/login_and_register/select_login_screen.dart';
 import 'package:project/src/views/qr_screen.dart';
 import 'package:project/src/views/splash_screen.dart';
 import 'package:project/src/views/stamp_screen.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => DefalutLayout(),
         'splash': (context) => SplashScreen(),
-        'login': (context) => LoginScreen(),
+        'login': (context) => SelectLoginScreen(),
       },
     );
   }
@@ -58,7 +58,6 @@ class _DefalutLayoutState extends State<DefalutLayout> {
         children: <Widget>[
           HomeScreen(),
           DictionaryScreen(),
-          // QrScreen(onPageChanged: () => {changeIndex(3)}),
           QrScreen(onChanged: () { changeIndex(3); },),
           StampScreen(),
           UserScreen(),
