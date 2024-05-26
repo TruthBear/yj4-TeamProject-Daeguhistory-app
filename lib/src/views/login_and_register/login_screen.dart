@@ -92,16 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: BACKGROUND_COLOR,
       appBar: AppBar(
-        backgroundColor: BACKGROUND_COLOR,
-        title: Text(
-          "로그인",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
+        title: Text("로그인"),
       ),
       body: SafeArea(
         child: Padding(
@@ -146,10 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     buttonText: "비밀번호를 잊으셨나요?",
                   ),
                 ],
-              ),
-              ElevatedButton(
-                onPressed: oo,
-                child: Text("토큰 확인"),
               ),
             ],
           ),
