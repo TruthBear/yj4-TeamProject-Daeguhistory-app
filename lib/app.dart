@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project/src/navigation/bottom_navigation_items.dart';
-import 'package:project/src/views/dictionary_screen.dart';
+import 'package:project/src/utils/colors.dart';
+import 'package:project/src/views/dictionary/dictionary_screen.dart';
 import 'package:project/src/views/home_screen.dart';
 import 'package:project/src/views/login_and_register/select_login_screen.dart';
 import 'package:project/src/views/qr_screen.dart';
@@ -20,6 +21,18 @@ class MyApp extends StatelessWidget {
         'splash': (context) => SplashScreen(),
         'login': (context) => SelectLoginScreen(),
       },
+      theme: ThemeData(
+        scaffoldBackgroundColor: BACKGROUND_COLOR,
+        appBarTheme: AppBarTheme(
+          centerTitle: true,
+          backgroundColor: BACKGROUND_COLOR,
+          titleTextStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black
+          )
+        ),
+      ),
     );
   }
 }
@@ -32,14 +45,12 @@ class DefalutLayout extends StatefulWidget {
 }
 
 class _DefalutLayoutState extends State<DefalutLayout> {
-  PageController _pageController = PageController();
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   void changeIndex(int index) {
     setState(() {
       _currentIndex = index;
     });
-    _pageController.jumpToPage(index);
   }
 
   void onPageChanged(int index) {
@@ -51,19 +62,15 @@ class _DefalutLayoutState extends State<DefalutLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: Screens.elementAt(currentIndex),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: onPageChanged,
-        children: <Widget>[
-          HomeScreen(),
-          DictionaryScreen(),
-          QrScreen(onChanged: () { changeIndex(3); },),
-          StampScreen(),
-          UserScreen(),
-        ],
-      ),
+      body: [
+        HomeScreen(),
+        DictionaryScreen(),
+        QrScreen(onChanged: () { changeIndex(3);}),
+        StampScreen(),
+        UserScreen(),
+      ][_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: changeIndex,
         selectedItemColor: Colors.red,
