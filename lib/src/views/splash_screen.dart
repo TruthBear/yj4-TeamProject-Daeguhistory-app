@@ -35,12 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void isLogin() async {
     final dio = Dio();
     final ip = dotenv.get("SERVER_URL");
-
     String? token = await storage.read(key: REFRESH_TOKEN_KEY);
     if (token != null) {
       // 리프레쉬 토큰이 있을시
       try{
-        Response response = await dio.get(
+        Response response = await dio.post(
           '$ip/api/oauth/token',
           options: Options(
               headers: {
