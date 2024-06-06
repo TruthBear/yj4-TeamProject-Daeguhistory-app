@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project/src/utils/colors.dart';
 import 'package:project/src/views/dictionary/dictionary_webview.dart';
 import 'package:project/src/weiget/custom_text_button.dart';
-
 import '../../utils/secure_storage.dart';
 
 class DictionaryDetailScreen extends StatefulWidget {
@@ -50,9 +49,18 @@ class _DictionaryDetailScreenState extends State<DictionaryDetailScreen> {
         child: FutureBuilder(
           future: getCourseList(),
           builder: (context, snapshot) {
+
             if (snapshot.hasError) {
               return Center(
                 child: Text("데이터를 받아올 수 없습니다."),
+              );
+            }
+
+            if(snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                color: GRAY,
+                width: double.infinity,
+                height: 300,
               );
             }
 
@@ -79,24 +87,28 @@ class _DictionaryDetailScreenState extends State<DictionaryDetailScreen> {
               url = web_url;
               // print(description);
               return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Image.network(image_url),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: 20, right: 20, top: 30, bottom: 120),
-                      child: Column(
-                        children: [
-                          ...textWidgets,
-                        ],
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Image.network(image_url),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 30, bottom: 120),
+                        child: Column(
+                          children: [
+                            ...textWidgets,
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }
             return Container(
               color: GRAY,
+              width: double.infinity,
               height: 300,
             );
           },

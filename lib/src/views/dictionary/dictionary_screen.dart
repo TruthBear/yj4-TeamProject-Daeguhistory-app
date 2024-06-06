@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:project/src/utils/colors.dart';
+import 'package:project/src/utils/provider_state.dart';
 import 'package:project/src/views/dictionary/dictionary_detail_screen.dart';
+import 'package:provider/provider.dart';
 import '../../utils/secure_storage.dart';
 
 class DictionaryScreen extends StatefulWidget {
@@ -16,8 +18,10 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   String text = "";
 
   Future<Map<String, dynamic>> getCourseList() async {
+
     final dio = Dio();
     final ip = dotenv.get("SERVER_URL");
+    final tour = context.read<TourTitle>().title;
     String? token = await storage.read(key: ACCESS_TOKEN_KEY);
 
     try {
@@ -26,7 +30,7 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
             "Authorization": "Bearer $token",
           }),
           queryParameters: {
-            "course_tour": "극장",
+            "course_tour": "$tour",
           });
       return response.data;
     } on DioException catch (e) {
@@ -38,7 +42,17 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("대구의 옛 극장들"),
+        title: Column(
+          children: [
+            Text(
+              context.watch<TourTitle>().title == null ? "투어를 선택해주세요" : "현재 진행중인 투어",
+              style: TextStyle(color: PRIMARY_COLOR, fontSize: 12),
+            ),
+            context.watch<TourTitle>().title == null
+                ? Container()
+                : Text("${context.watch<TourTitle>().title}")
+          ],
+        ),
       ),
       body: SafeArea(
         child: FutureBuilder(
@@ -50,41 +64,42 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
                 );
               }
               if (snapshot.hasData) {
+                if(context.read<TourTitle>().title == null) {
+                  return Center(
+                    child: Text("투어를 선택해주세요"),
+                  );
+                }
+
                 List<dynamic> result = snapshot.data!["data"];
                 return ListView.builder(
                   itemCount: result.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      print("스탭바이 스탭");
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: SizedBox(
-                          height: 100,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => DictionaryDetailScreen(
-                                      title: result[index]["course_name"]),
-                                ),
-                              );
-                            },
-                            label: Text(
-                              "${result[index]["course_name"]}",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                )),
+                  itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: SizedBox(
+                        height: 100,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DictionaryDetailScreen(
+                                    title: result[index]["course_name"]),
+                              ),
+                            );
+                          },
+                          label: Text(
+                            "${result[index]["course_name"]}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                        )),
-                  ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              )),
+                        ),
+                      )),
                 );
               }
 

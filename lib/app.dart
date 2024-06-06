@@ -4,9 +4,9 @@ import 'package:project/src/utils/colors.dart';
 import 'package:project/src/views/dictionary/dictionary_screen.dart';
 import 'package:project/src/views/home_screen.dart';
 import 'package:project/src/views/login_and_register/select_login_screen.dart';
-import 'package:project/src/views/qr_screen.dart';
 import 'package:project/src/views/splash_screen.dart';
-import 'package:project/src/views/stamp_screen.dart';
+import 'package:project/src/views/stamp/stamp_screen.dart';
+import 'package:project/src/views/stamp/test.dart';
 import 'package:project/src/views/user_screen.dart';
 
 class MyApp extends StatelessWidget {
@@ -15,11 +15,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: 'splash',
       routes: {
         '/': (context) => DefalutLayout(),
         'splash': (context) => SplashScreen(),
         'login': (context) => SelectLoginScreen(),
+        'test' : (context) => TestMap(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: BACKGROUND_COLOR,
@@ -65,7 +67,6 @@ class _DefalutLayoutState extends State<DefalutLayout> {
       body: [
         HomeScreen(),
         DictionaryScreen(),
-        QrScreen(onChanged: () { changeIndex(3);}),
         StampScreen(),
         UserScreen(),
       ][_currentIndex],
