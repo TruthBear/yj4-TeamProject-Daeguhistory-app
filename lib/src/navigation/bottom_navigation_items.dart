@@ -10,10 +10,6 @@ const List<BottomNavigationBarItem> BottomNavigationItems = [
     label: '사전',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.qr_code),
-    label: 'qr코드',
-  ),
-  BottomNavigationBarItem(
     icon: Icon(Icons.map_rounded),
     label: '스탬프',
   ),
