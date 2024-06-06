@@ -9,6 +9,7 @@ class CustomTextButton extends StatelessWidget {
   final Color foregroundColor;
   final Color? disabledBackgroundColor;
   final BorderSide? side;
+  final Widget? icon;
 
   const CustomTextButton({
     super.key,
@@ -19,7 +20,7 @@ class CustomTextButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor = Colors.black,
     this.disabledBackgroundColor,
-    this.side,
+    this.side, this.icon,
   });
 
   @override
@@ -28,6 +29,8 @@ class CustomTextButton extends StatelessWidget {
       width: width,
       height: height,
       child: TextButton.icon(
+        icon: icon,
+        iconAlignment: IconAlignment.start,
         onPressed: onPressed,
         label: Text(
           "$buttonText",
