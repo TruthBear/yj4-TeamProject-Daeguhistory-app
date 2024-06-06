@@ -50,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
       hasTextFieldValue = _emailController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty;
     });
-    print(hasTextFieldValue);
   }
 
   void login() async {
@@ -78,6 +77,21 @@ class _LoginScreenState extends State<LoginScreen> {
       if (e.response != null) {
         print(e.response?.statusCode);
         print(e.response?.data["message"]);
+
+        showCupertinoDialog(
+          context: context,
+          builder: (context) => CupertinoAlertDialog(
+            title: Text("이메일 또는 비밀번호를 확인해주세요", style: TextStyle(fontSize: 16),),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(context);
+                },
+                child: Text("확인"),
+              ),
+            ],
+          ),
+        );
       }
     }
   }
