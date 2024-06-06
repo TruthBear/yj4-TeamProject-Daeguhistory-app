@@ -44,49 +44,52 @@ class _TourSelectButtonState extends State<TourSelectButton> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(25),
-            child: InkWell(
-              onTap: () async {
-                await storage.write(
-                    key: SELETED_TOUR_KEY, value: "${widget.title}");
-                context.read<TourTitle>().setTitle = "${widget.title}";
-                final list = widget.latlng!.split(',');
-                context.read<TourLatLng>().setLatitude = double.parse(list[0]);
-                context.read<TourLatLng>().setLongitude = double.parse(list[1]);
-              },
-              child: Column(
-                children: [
-                  Image.network("${widget.image}"),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${widget.title}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Text("${widget.tourDescription}"),
-                            ],
-                          ),
-                          Icon(
-                            widget.title == context.watch<TourTitle>().title
-                                ? Icons.check_box_outlined
-                                : Icons.check_box_outline_blank,
-                            color: PRIMARY_COLOR,
-                          ),
-                        ],
+            child: Ink(
+              color: Colors.red,
+              child: InkWell(
+                onTap: () async {
+                  await storage.write(
+                      key: SELETED_TOUR_KEY, value: "${widget.title}");
+                  context.read<TourTitle>().setTitle = "${widget.title}";
+                  final list = widget.latlng!.split(',');
+                  context.read<TourLatLng>().setLatitude = double.parse(list[0]);
+                  context.read<TourLatLng>().setLongitude = double.parse(list[1]);
+                },
+                child: Column(
+                  children: [
+                    Image.network("${widget.image}"),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${widget.title}",
+                                  style: TextStyle(
+                                      fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                Text("${widget.tourDescription}"),
+                              ],
+                            ),
+                            Icon(
+                              widget.title == context.watch<TourTitle>().title
+                                  ? Icons.check_box_outlined
+                                  : Icons.check_box_outline_blank,
+                              color: PRIMARY_COLOR,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
