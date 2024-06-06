@@ -9,13 +9,16 @@ void main() async {
 
   runApp(
     MultiProvider(
-      providers: [
+        providers: [
         ChangeNotifierProvider(
           create: (context) => TourTitle(),
         ),
         ChangeNotifierProvider(
           create: (context) => TourLatLng(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => Register(),
+        )
       ],
       child: MyApp(),
     ),
