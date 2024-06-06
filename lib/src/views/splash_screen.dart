@@ -72,17 +72,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "스플래쉬 스크린임",
-                style: TextStyle(fontSize: 30),
-              ),
-              CircularProgressIndicator(
-                color: Colors.red,
-              ),
-            ],
+          child: Image.asset(
+            "assets/splash_logo.png"
           ),
         ),
       ),
